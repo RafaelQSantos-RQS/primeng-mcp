@@ -1,0 +1,361 @@
+---
+title: "Angular ColorPicker Component"
+type: "component"
+version: "latest"
+source_url: "https://primeng.dev/llms/components/colorpicker.md"
+description: "ColorPicker is an input component to select a color."
+---
+
+# Angular ColorPicker Component
+
+ColorPicker is an input component to select a color.
+
+## Accessibility
+
+Screen Reader Specification does not cover a color picker yet and using a semantic native color picker is not consistent across browsers so currently component is not compatible with screen readers. In the upcoming versions, text fields will be introduced below the slider section to be able to pick a color using accessible text boxes in hsl, rgba and hex formats.
+
+## Basic
+
+ColorPicker is used as a controlled input with ngModel property.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-colorpicker [(ngModel)]="color" />
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, FormsModule]
+})
+export class ColorPickerBasicDemo {
+    color: string | undefined;
+}
+```
+
+## Disabled
+
+When disabled is present, the element cannot be edited and focused.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-colorpicker [(ngModel)]="color" [disabled]="true" />
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, FormsModule]
+})
+export class ColorPickerDisabledDemo {
+    color: string | undefined;
+}
+```
+
+## Format
+
+Default color format to use in value binding is hex and other possible values can be rgb and hsb using the format property.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
+@Component({
+    template: `
+        <div class="flex flex-wrap gap-4">
+            <div class="flex-1 flex flex-col items-center">
+                <label for="cp-hex" class="text-sm font-bold block mb-2"> HEX </label>
+                <p-colorpicker [(ngModel)]="color" inputId="cp-hex" class="mb-4" />
+                <span class="text-sm">{{ color }}</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center">
+                <label for="cp-rgb" class="text-sm font-bold block mb-2"> RGB </label>
+                <p-colorpicker [(ngModel)]="colorRGB" format="rgb" inputId="cp-rgb" class="mb-4" />
+                <span class="text-sm">{{ 'r:' + colorRGB.r + ' g:' + colorRGB.g + ' b:' + colorRGB.b }}</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center">
+                <label for="cp-hsb" class="text-sm font-bold block mb-2"> HSB </label>
+                <p-colorpicker [(ngModel)]="colorHSB" format="hsb" inputId="cp-hsb" class="mb-4" />
+                <span class="text-sm">{{ 'h:' + colorHSB.h + ' s:' + colorHSB.s + ' b:' + colorHSB.b }}</span>
+            </div>
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, FormsModule]
+})
+export class ColorPickerFormatDemo {
+    color: string = '#6466f1';
+
+    colorRGB: any = { r: 100, g: 102, b: 241 };
+
+    colorHSB: any = { h: 239, s: 59, b: 95 };
+}
+```
+
+## Inline
+
+ColorPicker is displayed as a popup by default, add inline property to customize this behavior.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-colorpicker [(ngModel)]="color" [inline]="true" />
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, FormsModule]
+})
+export class ColorPickerInlineDemo {
+    color: string | undefined;
+}
+```
+
+## reactiveforms-doc
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form [formGroup]="exampleForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <p-colorpicker formControlName="color" defaultColor="989898" />
+                    @if (isInvalid('color')) {
+                        <p-message severity="error" size="small" variant="simple">Color is required.</p-message>
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, MessageModule, ToastModule, ButtonModule, ReactiveFormsModule]
+})
+export class ColorPickerReactiveFormsDemo {
+    private fb = inject(FormBuilder);
+
+    messageService = inject(MessageService);
+
+    exampleForm: FormGroup;
+
+    formSubmitted: boolean = false;
+
+    constructor() {
+        this.exampleForm = this.fb.group({
+            color: ['', Validators.required]
+        });
+    }
+
+    onSubmit() {
+        this.formSubmitted = true;
+
+        if (this.exampleForm.valid) {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        }
+    }
+
+    isInvalid(controlName: string) {
+        const control = this.exampleForm.get(controlName);
+
+        return control?.invalid && this.formSubmitted;
+    }
+}
+```
+
+## signal-forms-doc
+
+```typescript
+import { Component, inject, signal } from '@angular/core';
+import { form, FormField, required, submit } from '@angular/forms/signals';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form novalidate (submit)="onSubmit($event)" class="flex flex-col gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <p-colorpicker [formField]="exampleForm.color" defaultColor="989898" />
+                    @if (exampleForm.color().touched() && exampleForm.color().invalid()) {
+                        @for (error of exampleForm.color().errors(); track error.kind) {
+                            <p-message severity="error" size="small" variant="simple">{{ error.message }}</p-message>
+                        }
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, MessageModule, ToastModule, ButtonModule, FormField]
+})
+export class ColorPickerSignalFormsDemo {
+    messageService = inject(MessageService);
+
+    model = signal<{ color: string | null }>({ color: null });
+
+    exampleForm = form(this.model, (path) => {
+        required(path.color, { when: ({ state }) => state.touched(), message: 'Color is required.' });
+    });
+
+    onSubmit(event: Event) {
+        event.preventDefault();
+        submit(this.exampleForm, async () => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        });
+    }
+}
+```
+
+## templatedrivenforms-doc
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form #exampleForm="ngForm" (ngSubmit)="onSubmit(exampleForm)" class="flex flex-col gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <p-colorpicker name="color" [(ngModel)]="color" #colorModel="ngModel" required defaultColor="989898" />
+                    @if (colorModel.invalid && (colorModel.touched || exampleForm.submitted)) {
+                        <p-message severity="error" size="small" variant="simple">Color is required.</p-message>
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [ColorPickerModule, MessageModule, ToastModule, ButtonModule, FormsModule]
+})
+export class ColorPickerTemplateDrivenFormsDemo {
+    messageService = inject(MessageService);
+
+    color: string | undefined;
+
+    onSubmit(form: any) {
+        if (form.valid) {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        }
+    }
+}
+```
+
+## Color Picker
+
+ColorPicker groups a collection of contents in tabs.
+
+### Props
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| dt | object \| undefined | undefined | Defines scoped design tokens of the component. |
+| unstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| pt | PassThrough<I, ColorPickerPassThroughOptions<I>> | undefined | Used to pass attributes to DOM elements inside the component. |
+| ptOptions | PassThroughOptions \| undefined | undefined | Used to configure passthrough(pt) options of the component. |
+| required | boolean \| undefined | false | There must be a value (if set). |
+| invalid | boolean \| undefined | false | When present, it specifies that the component should have invalid state style. |
+| disabled | boolean \| undefined | false | When present, it specifies that the component should have disabled state style. |
+| name | string \| undefined | undefined | When present, it specifies that the name of the input. |
+| inline | boolean | - | Whether to display as an overlay or not. |
+| format | "hex" \| "rgb" \| "hsb" | - | Format to use in value binding. |
+| tabindex | string \| undefined | - | Index of the element in tabbing order. |
+| inputId | string \| undefined | - | Identifier of the focus input to match a label defined for the dropdown. |
+| autoZIndex | boolean | - | Whether to automatically manage layering. |
+| autofocus | boolean | - | When present, it specifies that the component should automatically get focus on load. |
+| defaultColor | string | - | Default color to display initially when model value is not present. |
+| appendTo | HTMLElement \| ElementRef \| TemplateRef<any> \| "self" \| "body" \| null \| undefined | 'self' | Target element to attach the overlay, valid values are "body" or a local ng-template variable of another element (note: use binding with brackets for template variables, e.g. [appendTo]="mydiv" for a div element having #mydiv as variable name). |
+| overlayOptions | OverlayOptions \| undefined | - | Whether to use overlay API feature. The properties of overlay API can be used like an object in it. |
+| motionOptions | MotionOptions \| undefined | - | The motion options. |
+
+### Emits
+
+| Name | Parameters | Description |
+|------|------------|-------------|
+| onChange | event: ColorPickerChangeEvent | Callback to invoke on value change. |
+| onShow | value: any | Callback to invoke on panel is shown. |
+| onHide | value: any | Callback to invoke on panel is hidden. |
+
+## Pass Through Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| host | PassThroughOption<HTMLElement, I> | Used to pass attributes to the host's DOM element. |
+| root | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the root's DOM element. |
+| preview | PassThroughOption<HTMLInputElement, I> | Used to pass attributes to the preview input's DOM element. |
+| panel | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the panel's DOM element. |
+| content | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the content's DOM element. |
+| colorSelector | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the color selector's DOM element. |
+| colorBackground | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the color background's DOM element. |
+| colorHandle | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the color handle's DOM element. |
+| hue | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the hue's DOM element. |
+| hueHandle | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the hue handle's DOM element. |
+| motion | MotionOptions | Used to pass options to the motion component/directive. |
+
+## Theming
+
+### CSS Classes
+
+| Class | Description |
+|-------|-------------|
+| p-colorpicker | Class name of the root element |
+| p-colorpicker-preview | Class name of the preview element |
+| p-colorpicker-panel | Class name of the panel element |
+| p-colorpicker-color-selector | Class name of the color selector element |
+| p-colorpicker-color-background | Class name of the color background element |
+| p-colorpicker-color-handle | Class name of the color handle element |
+| p-colorpicker-hue | Class name of the hue element |
+| p-colorpicker-hue-handle | Class name of the hue handle element |
+
+### Design Tokens
+
+| Token | CSS Variable | Description |
+|-------|--------------|-------------|
+| colorpicker.transition.duration | --p-colorpicker-transition-duration | Transition duration of root |
+| colorpicker.preview.width | --p-colorpicker-preview-width | Width of preview |
+| colorpicker.preview.height | --p-colorpicker-preview-height | Height of preview |
+| colorpicker.preview.border.radius | --p-colorpicker-preview-border-radius | Border radius of preview |
+| colorpicker.preview.focus.ring.width | --p-colorpicker-preview-focus-ring-width | Focus ring width of preview |
+| colorpicker.preview.focus.ring.style | --p-colorpicker-preview-focus-ring-style | Focus ring style of preview |
+| colorpicker.preview.focus.ring.color | --p-colorpicker-preview-focus-ring-color | Focus ring color of preview |
+| colorpicker.preview.focus.ring.offset | --p-colorpicker-preview-focus-ring-offset | Focus ring offset of preview |
+| colorpicker.preview.focus.ring.shadow | --p-colorpicker-preview-focus-ring-shadow | Focus ring shadow of preview |
+| colorpicker.panel.shadow | --p-colorpicker-panel-shadow | Shadow of panel |
+| colorpicker.panel.border.radius | --p-colorpicker-panel-border-radius | Border radius of panel |
+| colorpicker.panel.background | --p-colorpicker-panel-background | Background of panel |
+| colorpicker.panel.border.color | --p-colorpicker-panel-border-color | Border color of panel |
+| colorpicker.handle.color | --p-colorpicker-handle-color | Color of handle |

@@ -1,0 +1,945 @@
+---
+title: "Angular SplitButton Component"
+type: "component"
+version: "latest"
+source_url: "https://primeng.dev/llms/components/splitbutton.md"
+description: "SplitButton groups a set of commands in an overlay with a default action item."
+---
+
+# Angular SplitButton Component
+
+SplitButton groups a set of commands in an overlay with a default action item.
+
+## Accessibility
+
+Screen Reader SplitButton component renders two native button elements. The main button uses the label property to define aria-label by default. Both buttons can be relabelled through the pt (pass-through) API by targeting the pcButton.root and pcDropdown.root sections. The dropdown button also includes aria-haspopup , aria-expanded for states along with aria-controls to define the relation between the popup and the button. The popup overlay uses menu role on the list and each action item has a menuitem role with an aria-label as the menuitem label. The id of the menu refers to the aria-controls of the dropdown button.
+
+## Basic
+
+SplitButton has a default action button and a collection of additional options defined by the model property based on MenuModel API.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonBasicDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Disabled
+
+When the disabled attribute is present, the element is uneditable and unfocused. Additionally, the disabled states of the button and menu button can be handled independently. The button is disabled when buttonDisabled is present, and the menu button is disabled when menuButtonDisabled is present.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-splitbutton label="Save" icon="pi pi-plus" (onClick)="save('info')" [model]="items" [disabled]="true" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonDisabledDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Icons
+
+The buttons and menuitems have support to display icons.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-splitbutton label="Save" icon="pi pi-check" dropdownIcon="pi pi-cog" [model]="items" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonIconsDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                icon: 'pi pi-refresh',
+                command: () => {
+                    this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Data Updated', life: 3000 });
+                }
+            },
+            {
+                label: 'Delete',
+                icon: 'pi pi-times',
+                command: () => {
+                    this.messageService.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted', life: 3000 });
+                }
+            },
+            {
+                separator: true
+            },
+            {
+                label: 'Quit',
+                icon: 'pi pi-power-off',
+                command: () => {
+                    window.open('https://angular.io/', '_blank');
+                }
+            }
+        ];
+    }
+}
+```
+
+## Nested
+
+SplitButton has a default action button and a collection of additional options defined by the model property based on MenuModel API.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-splitbutton label="Save" (onClick)="save('info')" [model]="items" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonNestedDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'File',
+                icon: 'pi pi-fw pi-file',
+                items: [
+                    {
+                        label: 'New',
+                        icon: 'pi pi-fw pi-plus',
+                        items: [
+                            {
+                                label: 'Bookmark',
+                                icon: 'pi pi-fw pi-bookmark'
+                            },
+                            {
+                                label: 'Video',
+                                icon: 'pi pi-fw pi-video'
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Delete',
+                        icon: 'pi pi-fw pi-trash'
+                    },
+                    {
+                        separator: true
+                    },
+                    {
+                        label: 'Export',
+                        icon: 'pi pi-fw pi-external-link'
+                    }
+                ]
+            },
+            {
+                label: 'Edit',
+                icon: 'pi pi-fw pi-pencil',
+                items: [
+                    {
+                        label: 'Left',
+                        icon: 'pi pi-fw pi-align-left'
+                    },
+                    {
+                        label: 'Right',
+                        icon: 'pi pi-fw pi-align-right'
+                    },
+                    {
+                        label: 'Center',
+                        icon: 'pi pi-fw pi-align-center'
+                    },
+                    {
+                        label: 'Justify',
+                        icon: 'pi pi-fw pi-align-justify'
+                    }
+                ]
+            },
+            {
+                label: 'Users',
+                icon: 'pi pi-fw pi-user',
+                items: [
+                    {
+                        label: 'New',
+                        icon: 'pi pi-fw pi-user-plus'
+                    },
+                    {
+                        label: 'Delete',
+                        icon: 'pi pi-fw pi-user-minus'
+                    },
+                    {
+                        label: 'Search',
+                        icon: 'pi pi-fw pi-users',
+                        items: [
+                            {
+                                label: 'Filter',
+                                icon: 'pi pi-fw pi-filter',
+                                items: [
+                                    {
+                                        label: 'Print',
+                                        icon: 'pi pi-fw pi-print'
+                                    }
+                                ]
+                            },
+                            {
+                                icon: 'pi pi-fw pi-bars',
+                                label: 'List'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                label: 'Events',
+                icon: 'pi pi-fw pi-calendar',
+                items: [
+                    {
+                        label: 'Edit',
+                        icon: 'pi pi-fw pi-pencil',
+                        items: [
+                            {
+                                label: 'Save',
+                                icon: 'pi pi-fw pi-calendar-plus'
+                            },
+                            {
+                                label: 'Delete',
+                                icon: 'pi pi-fw pi-calendar-minus'
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Archieve',
+                        icon: 'pi pi-fw pi-calendar-times',
+                        items: [
+                            {
+                                label: 'Remove',
+                                icon: 'pi pi-fw pi-calendar-minus'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                separator: true
+            },
+            {
+                label: 'Quit',
+                icon: 'pi pi-fw pi-power-off'
+            }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+}
+```
+
+## Outlined
+
+Outlined buttons display a border without a background initially.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Primary" [model]="items" (onClick)="save('info')" outlined />
+            <p-splitbutton label="Secondary" [model]="items" (onClick)="save('info')" outlined severity="secondary" />
+            <p-splitbutton label="Success" [model]="items" (onClick)="save('info')" outlined severity="success" />
+            <p-splitbutton label="Info" [model]="items" (onClick)="save('info')" outlined severity="info" />
+            <p-splitbutton label="Warning" [model]="items" (onClick)="save('info')" outlined severity="warn" />
+            <p-splitbutton label="Help" [model]="items" (onClick)="save('info')" outlined severity="help" />
+            <p-splitbutton label="Danger" [model]="items" (onClick)="save('info')" outlined severity="danger" />
+            <p-splitbutton label="Contrast" [model]="items" (onClick)="save('info')" outlined severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonOutlinedDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Raised
+
+Raised buttons display a shadow to indicate elevation.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Primary" [model]="items" (onClick)="save('info')" raised />
+            <p-splitbutton label="Secondary" [model]="items" (onClick)="save('info')" raised severity="secondary" />
+            <p-splitbutton label="Success" [model]="items" (onClick)="save('info')" raised severity="success" />
+            <p-splitbutton label="Info" [model]="items" (onClick)="save('info')" raised severity="info" />
+            <p-splitbutton label="Warning" [model]="items" (onClick)="save('info')" raised severity="warn" />
+            <p-splitbutton label="Help" [model]="items" (onClick)="save('info')" raised severity="help" />
+            <p-splitbutton label="Danger" [model]="items" (onClick)="save('info')" raised severity="danger" />
+            <p-splitbutton label="Contrast" (onClick)="save('info')" [model]="items" severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonRaisedDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Raised Text
+
+Text buttons can be displayed as raised as well for elevation.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Primary" [model]="items" (onClick)="save('info')" raised text />
+            <p-splitbutton label="Secondary" [model]="items" (onClick)="save('info')" raised text severity="secondary" />
+            <p-splitbutton label="Success" [model]="items" (onClick)="save('info')" raised text severity="success" />
+            <p-splitbutton label="Info" [model]="items" (onClick)="save('info')" raised text severity="info" />
+            <p-splitbutton label="Warning" [model]="items" (onClick)="save('info')" raised text severity="warn" />
+            <p-splitbutton label="Help" [model]="items" (onClick)="save('info')" raised text severity="help" />
+            <p-splitbutton label="Danger" [model]="items" (onClick)="save('info')" raised text severity="danger" />
+            <p-splitbutton label="Contrast" [model]="items" (onClick)="save('info')" raised text severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonRaisedTextDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## reversedkeys-doc
+
+Following keys are reserved in the preset scheme and cannot be used as a token name; primitive , semantic , components , directives , colorscheme , light , dark , common , root , states and extend .
+
+## rounded-doc
+
+Rounded buttons have a circular border radius.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Primary" [model]="items" (onClick)="save('info')" rounded />
+            <p-splitbutton label="Secondary" [model]="items" (onClick)="save('info')" rounded severity="secondary" />
+            <p-splitbutton label="Success" [model]="items" (onClick)="save('info')" rounded severity="success" />
+            <p-splitbutton label="Info" [model]="items" (onClick)="save('info')" rounded severity="info" />
+            <p-splitbutton label="Warning" [model]="items" (onClick)="save('info')" rounded severity="warn" />
+            <p-splitbutton label="Help" [model]="items" (onClick)="save('info')" rounded severity="help" />
+            <p-splitbutton label="Danger" [model]="items" (onClick)="save('info')" rounded severity="danger" />
+            <p-splitbutton label="Contrast" [model]="items" (onClick)="save('info')" rounded severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonRoundedDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Severity
+
+The severity property defines the type of button.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="secondary" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="success" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="info" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="warn" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="help" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="danger" />
+            <p-splitbutton label="Save" (onClick)="save()" [model]="items" severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonSeverityDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Sizes
+
+SplitButton provides small and large sizes as alternatives to the standard.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex flex-wrap justify-center items-center gap-4">
+            <p-splitbutton label="Small" [model]="items" (onClick)="save('info')" size="small" />
+            <p-splitbutton label="Normal" [model]="items" (onClick)="save('info')" />
+            <p-splitbutton label="Large" [model]="items" (onClick)="save('info')" size="large" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonSizesDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Template
+
+SplitButton has a default action button and a collection of additional options defined by the model property based on MenuModel API.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-splitbutton (onClick)="save()" severity="contrast" [model]="items">
+                <ng-template #content>
+                    <span class="flex items-center font-bold">
+                        <img alt="logo" src="https://primefaces.org/cdn/primeng/images/logo.svg" style="height: 1rem; margin-right: 0.5rem" />
+                        <span>PrimeNG</span>
+                    </span>
+                </ng-template>
+            </p-splitbutton>
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonTemplateDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Text
+
+Text buttons are displayed as textual elements.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MenuItem, MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <div class="flex justify-center flex-wrap gap-4">
+            <p-splitbutton label="Primary" [model]="items" (onClick)="save('info')" text />
+            <p-splitbutton label="Secondary" [model]="items" (onClick)="save('info')" text severity="secondary" />
+            <p-splitbutton label="Success" [model]="items" (onClick)="save('info')" text severity="success" />
+            <p-splitbutton label="Info" [model]="items" (onClick)="save('info')" text severity="info" />
+            <p-splitbutton label="Warning" [model]="items" (onClick)="save('info')" text severity="warn" />
+            <p-splitbutton label="Help" [model]="items" (onClick)="save('info')" text severity="help" />
+            <p-splitbutton label="Danger" [model]="items" (onClick)="save('info')" text severity="danger" />
+            <p-splitbutton label="Contrast" [model]="items" (onClick)="save('info')" text severity="contrast" />
+        </div>
+    `,
+    standalone: true,
+    imports: [SplitButtonModule],
+    providers: [MessageService]
+})
+export class SplitButtonTextDemo {
+    private messageService = inject(MessageService);
+
+    items: MenuItem[];
+
+    constructor() {
+        this.items = [
+            {
+                label: 'Update',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                command: () => {
+                    this.delete();
+                }
+            },
+            { label: 'Angular.dev', url: 'https://angular.dev' },
+            { separator: true },
+            { label: 'Upload', routerLink: ['/fileupload'] }
+        ];
+    }
+
+    save(severity: string) {
+        this.messageService.add({ severity: severity, summary: 'Success', detail: 'Data Saved' });
+    }
+
+    update() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
+    }
+
+    delete() {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Deleted' });
+    }
+}
+```
+
+## Split Button
+
+SplitButton groups a set of commands in an overlay with a default command.
+
+### Props
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| dt | object \| undefined | undefined | Defines scoped design tokens of the component. |
+| unstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| pt | PassThrough<I, SplitButtonPassThroughOptions<I>> | undefined | Used to pass attributes to DOM elements inside the component. |
+| ptOptions | PassThroughOptions \| undefined | undefined | Used to configure passthrough(pt) options of the component. |
+| model_ | MenuItem[] \| undefined | - | MenuModel instance to define the overlay items. |
+| severity | "success" \| "info" \| "warn" \| "danger" \| "help" \| "primary" \| "secondary" \| "contrast" \| null \| undefined | - | Defines the style of the button. |
+| raised | boolean | - | Add a shadow to indicate elevation. |
+| rounded | boolean | - | Add a circular border radius to the button. |
+| text | boolean | - | Add a textual class to the button without a background initially. |
+| outlined | boolean | - | Add a border class without a background initially. |
+| size | ButtonSize \| undefined | - | Defines the size of the button. |
+| plain | boolean | - | Add a plain textual class to the button without a background initially. |
+| icon | string \| undefined | - | Name of the icon. |
+| iconPos | "left" \| "right" | - | Position of the icon. |
+| label | string \| undefined | - | Text of the button. |
+| tooltip | string \| undefined | - | Tooltip for the main button. |
+| tooltipOptions | TooltipOptions \| undefined | - | Tooltip options for the main button. |
+| menuStyle | { [klass: string]: any } \| null \| undefined | - | Inline style of the overlay menu. |
+| menuStyleClass | string \| undefined | - | Style class of the overlay menu. |
+| dropdownIcon | string \| undefined | - | Name of the dropdown icon. |
+| appendTo | HTMLElement \| ElementRef \| TemplateRef<any> \| "self" \| "body" \| null \| undefined | 'body' | Target element to attach the overlay, valid values are "body" or a local ng-template variable of another element (note: use binding with brackets for template variables, e.g. [appendTo]="mydiv" for a div element having #mydiv as variable name). |
+| dir | string \| undefined | - | Indicates the direction of the element. |
+| expandAriaLabel | string \| undefined | - | Defines a string that labels the expand button for accessibility. |
+| motionOptions | MotionOptions \| undefined | - | The motion options. |
+| autofocus | boolean | - | When present, it specifies that the component should automatically get focus on load. |
+| disabled | boolean | - | When present, it specifies that the element should be disabled. |
+| tabindex | number \| undefined | - | Index of the element in tabbing order. |
+| menuButtonDisabled | boolean | - | When present, it specifies that the menu button element should be disabled. |
+| buttonDisabled | boolean | - | When present, it specifies that the button element should be disabled. |
+
+### Emits
+
+| Name | Parameters | Description |
+|------|------------|-------------|
+| onClick | event: MouseEvent | Callback to invoke when default command button is clicked. |
+| onMenuHide | value: void | Callback to invoke when overlay menu is hidden. |
+| onMenuShow | value: void | Callback to invoke when overlay menu is shown. |
+| onDropdownClick | event: MouseEvent | Callback to invoke when dropdown button is clicked. |
+
+### Templates
+
+| Name | Type | Description |
+|------|------|-------------|
+| content | TemplateRef<void> \| undefined | Custom content template. |
+| dropdownicon | TemplateRef<void> \| undefined | Custom dropdown icon template. |
+
+## Pass Through Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| root | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the root's DOM element. |
+| pcButton | ButtonPassThrough | Used to pass attributes to the Button component. |
+| pcDropdown | ButtonPassThrough | Used to pass attributes to the dropdown Button component. |
+| pcMenu | MenuPassThrough | Used to pass attributes to the TieredMenu component. |
+
+## Theming
+
+### CSS Classes
+
+| Class | Description |
+|-------|-------------|
+| p-splitbutton | Class name of the root element |
+| p-splitbutton-button | Class name of the button element |
+| p-splitbutton-dropdown | Class name of the dropdown element |
+
+### Design Tokens
+
+| Token | CSS Variable | Description |
+|-------|--------------|-------------|
+| splitbutton.border.radius | --p-splitbutton-border-radius | Border radius of root |
+| splitbutton.rounded.border.radius | --p-splitbutton-rounded-border-radius | Rounded border radius of root |
+| splitbutton.raised.shadow | --p-splitbutton-raised-shadow | Raised shadow of root |

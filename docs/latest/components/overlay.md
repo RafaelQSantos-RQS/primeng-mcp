@@ -1,0 +1,228 @@
+---
+title: "Overlay API - PrimeNG"
+type: "component"
+version: "latest"
+source_url: "https://primeng.dev/llms/components/overlay.md"
+description: "This API allows overlay components to be controlled from the PrimeNG. In this way, all overlay components in the application can have the same behavior."
+---
+
+# Overlay API - PrimeNG
+
+This API allows overlay components to be controlled from the PrimeNG. In this way, all overlay components in the application can have the same behavior.
+
+## Accessibility
+
+Screen Reader Overlay component uses dialog role and since any attribute is passed to the root element you may define attributes like aria-label or aria-labelledby to describe the popup contents. In addition aria-modal is added since focus is kept within the popup. It is recommended to use a trigger component that can be accessed with keyboard such as a button, if not adding tabIndex would be necessary. Overlay adds aria-expanded state attribute and aria-controls to the trigger so that the relation between the trigger and the popup is defined. Overlay Keyboard Support When the popup gets opened, the first focusable element receives the focus and this can be customized by adding autofocus to an element within the popup. Key Function tab Moves focus to the next the focusable element within the popup. shift + tab Moves focus to the previous the focusable element within the popup. escape Closes the popup and moves focus to the trigger. Close Button Keyboard Support Key Function enter Closes the popup and moves focus to the trigger. space Closes the popup and moves focus to the trigger.
+
+## appendto-doc
+
+Overlay can be mounted into its location, body or DOM element instance using this option.
+
+## autozindex-doc
+
+The autoZIndex determines whether to automatically manage layering. Its default value is 'false'.
+
+## basezindex-doc
+
+The baseZIndex is base zIndex value to use in layering. Its default value is 0.
+
+## Basic
+
+Overlay is a container to display content in an overlay window. All the options mentioned above can be used as props for this component.
+
+```typescript
+import { Component } from '@angular/core';
+import { OverlayModule } from 'primeng/overlay';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <button type="button" pButton (click)="toggle()">Show Overlay</button>
+            <p-overlay [(visible)]="overlayVisible" [responsive]="{ breakpoint: '640px', direction: 'bottom', contentStyleClass: 'h-20rem' }" contentStyleClass="p-6 bg-surface-0 dark:bg-surface-900 shadow-sm rounded-border"> Content </p-overlay>
+        </div>
+    `,
+    standalone: true,
+    imports: [OverlayModule, ButtonModule]
+})
+export class OverlayBasicDemo {
+    overlayVisible: boolean = false;
+
+    toggle() {
+        this.overlayVisible = !this.overlayVisible;
+    }
+}
+```
+
+## Events
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    template: `
+        <section class="py-6">
+        </section>
+    `,
+    standalone: true,
+    imports: []
+})
+export class OverlayEventsDemo {}
+```
+
+## hideonescape-doc
+
+The hideOnEscape determines to hide the overlay when escape key pressed. Accepts boolean, default value is false .
+
+## Mode
+
+It has two valid values; overlay and modal . In overlay mode, a container element is opened like overlaypanel or dropdown's panel. In modal mode, the container element behaves like popup. This behaviour is similar to a dialog component.
+
+## Responsive
+
+It is the option used to determine in which mode it should appear according to the given media or breakpoint .
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    template: `
+        <p class="doc-section-description">Valid values of the <i>direction</i> property would be;</p>
+        <div class="card">
+            <ul>
+                <li>center (default)</li>
+                <li>top</li>
+                <li>top-start</li>
+                <li>top-end</li>
+                <li>bottom</li>
+                <li>bottom-start</li>
+                <li>bottom-end</li>
+                <li>left</li>
+                <li>left-start</li>
+                <li>left-end</li>
+                <li>right</li>
+                <li>right-start</li>
+                <li>right-end</li>
+            </ul>
+        </div>
+    `,
+    standalone: true,
+    imports: []
+})
+export class OverlayResponsiveDemo {}
+```
+
+## Target
+
+The target is used to detect the element that will be used to position the overlay. Valid values would be;
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    template: `
+        <div class="card">
+            <ul>
+                <li>&#64;prev (default)</li>
+                <li>&#64;next</li>
+                <li>&#64;parent</li>
+                <li>&#64;grandparent</li>
+                <li>Use <em>CSS selector</em></li>
+                <li>Use <em>() =&gt; HTMLElement</em></li>
+            </ul>
+        </div>
+    `,
+    standalone: true,
+    imports: []
+})
+export class OverlayTargetDemo {}
+```
+
+## Template
+
+Content can be customized with the content template.
+
+```typescript
+import { Component } from '@angular/core';
+import { OverlayModule } from 'primeng/overlay';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <button type="button" pButton (click)="toggle()">Show Overlay</button>
+            <p-overlay [(visible)]="overlayVisible" [responsive]="{ breakpoint: '640px', direction: 'bottom', contentStyleClass: 'h-20rem' }" contentStyleClass="p-6 bg-surface-0 dark:bg-surface-900 shadow-sm rounded-border">
+                <ng-template #content let-option> Content - {{ option.mode }} </ng-template>
+            </p-overlay>
+        </div>
+    `,
+    standalone: true,
+    imports: [OverlayModule, ButtonModule]
+})
+export class OverlayTemplateDemo {
+    overlayVisible: boolean = false;
+
+    toggle() {
+        this.overlayVisible = !this.overlayVisible;
+    }
+}
+```
+
+## Overlay
+
+This API allows overlay components to be controlled from the PrimeNG. In this way, all overlay components in the application can have the same behavior.
+
+### Props
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| dt | object \| undefined | undefined | Defines scoped design tokens of the component. |
+| unstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| pt | any | undefined | Used to pass attributes to DOM elements inside the component. |
+| ptOptions | PassThroughOptions \| undefined | undefined | Used to configure passthrough(pt) options of the component. |
+| visible | boolean | false | The visible property is an input that determines the visibility of the component. |
+| mode | string \| undefined | null | The mode property is an input that determines the overlay mode type or string. |
+| style | { [klass: string]: any } \| null \| undefined | null | The style property is an input that determines the style object for the component. |
+| styleClass | string \| undefined | null | The styleClass property is an input that determines the CSS class(es) for the component. |
+| contentStyle | { [klass: string]: any } \| null \| undefined | null | The contentStyle property is an input that determines the style object for the content of the component. |
+| contentStyleClass | string \| undefined | null | The contentStyleClass property is an input that determines the CSS class(es) for the content of the component. |
+| target | string \| null \| undefined | null | The target property is an input that specifies the target element or selector for the component. |
+| autoZIndex | boolean \| undefined | false | The autoZIndex determines whether to automatically manage layering. Its default value is 'false'. |
+| baseZIndex | number \| undefined | null | The baseZIndex is base zIndex value to use in layering. |
+| listener | any | null | The listener property is an input that specifies the listener object for the component. |
+| responsive | ResponsiveOverlayOptions \| undefined | null | It is the option used to determine in which mode it should appear according to the given media or breakpoint. |
+| options | OverlayOptions \| undefined | null | The options property is an input that specifies the overlay options for the component. |
+| appendTo | HTMLElement \| ElementRef \| TemplateRef<any> \| "self" \| "body" \| null \| undefined | 'self' | Target element to attach the overlay, valid values are "body" or a local ng-template variable of another element (note: use binding with brackets for template variables, e.g. [appendTo]="mydiv" for a div element having #mydiv as variable name). |
+| inline | boolean | false | Specifies whether the overlay should be rendered inline within the current component's template. |
+| motionOptions | MotionOptions \| undefined | - | The motion options. |
+
+### Emits
+
+| Name | Parameters | Description |
+|------|------------|-------------|
+| onBeforeShow | event: OverlayOnBeforeShowEvent | Callback to invoke before the overlay is shown. |
+| onShow | event: OverlayOnShowEvent | Callback to invoke when the overlay is shown. |
+| onBeforeHide | event: OverlayOnBeforeHideEvent | Callback to invoke before the overlay is hidden. |
+| onHide | event: OverlayOnHideEvent | Callback to invoke when the overlay is hidden |
+| onAnimationStart | event: MotionEvent & AnimationEvent | Callback to invoke when the animation is started. |
+| onAnimationDone | event: MotionEvent & AnimationEvent | Callback to invoke when the animation is done. |
+| onBeforeEnter | event: MotionEvent | Callback to invoke before the overlay enters. |
+| onEnter | event: MotionEvent | Callback to invoke when the overlay enters. |
+| onAfterEnter | event: MotionEvent | Callback to invoke after the overlay has entered. |
+| onBeforeLeave | event: MotionEvent | Callback to invoke before the overlay leaves. |
+| onLeave | event: MotionEvent | Callback to invoke when the overlay leaves. |
+| onAfterLeave | event: MotionEvent | Callback to invoke after the overlay has left. |
+
+### Templates
+
+| Name | Type | Description |
+|------|------|-------------|
+| content | TemplateRef<OverlayContentTemplateContext> \| undefined | Content template of the component. |
+
+## Pass Through Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| root | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the root's DOM element. |
+| content | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the content's DOM element. |
+| motion | MotionOptions | Used to pass options to the motion component/directive. |

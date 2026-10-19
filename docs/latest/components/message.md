@@ -1,0 +1,510 @@
+---
+title: "Angular Message Component"
+type: "component"
+version: "latest"
+source_url: "https://primeng.dev/llms/components/message.md"
+description: "Message component is used to display inline messages."
+---
+
+# Angular Message Component
+
+Message component is used to display inline messages.
+
+## Accessibility
+
+Screen Reader Message component uses alert role that implicitly defines aria-live as "assertive" and aria-atomic as "true". Since any attribute is passed to the root element, attributes like aria-labelledby and aria-label can optionally be used as well. Close element is a button with an aria-label that refers to the aria.close property of the locale API by default. Close Button Keyboard Support Key Function enter Closes the message. space Closes the message.
+
+## Basic
+
+An inline message for informational, success, warning, or error feedback.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="max-w-sm mx-auto">
+            <p-message severity="info" icon="pi pi-sparkles" [closable]="true">Upgrade now and save %5.</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageBasicDemo {}
+```
+
+## Closable
+
+Enable closable option to display an icon to remove a message.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="max-w-xs mx-auto">
+            <p-message [closable]="true">This is a closable message.</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageClosableDemo {}
+```
+
+## Dynamic
+
+Multiple messages can be displayed using the standard for block.
+
+```typescript
+import { Component, signal } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+    template: `
+        <div class="flex flex-col items-center justify-center gap-4">
+            <div class="flex gap-2">
+                <button type="button" pButton (click)="addMessages()">Add Messages</button>
+                <button type="button" pButton severity="secondary" (click)="clearMessages()">Clear Messages</button>
+            </div>
+            <div class="flex flex-col">
+                @for (message of messages(); track message.severity; let first = $first) {
+                    <p-message [severity]="message.severity" [class]="{ 'mt-4': !first }" [closable]="message?.closable">{{ message.content }}</p-message>
+                }
+            </div>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule, ButtonModule]
+})
+export class MessageDynamicDemo {
+    messages = signal<any[]>([]);
+
+    clearMessages() {
+        this.messages.set([]);
+    }
+
+    addMessages() {
+        this.messages.set([
+            { severity: 'info', content: 'Dynamic Info Message' },
+            { severity: 'success', content: 'Dynamic Success Message' },
+            { severity: 'warn', content: 'Dynamic Warn Message' }
+        ]);
+    }
+}
+```
+
+## form-doc
+
+Validation errors in a form are displayed with the error severity.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputMaskModule } from 'primeng/inputmask';
+import { MessageModule } from 'primeng/message';
+import { InputTextModule } from 'primeng/inputtext';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <div class="flex flex-col gap-4">
+                <p-message severity="error" icon="pi pi-times-circle" class="mb-2">Validation Failed</p-message>
+                <div class="flex flex-col gap-1">
+                    <input pInputText placeholder="Username" [(ngModel)]="username" aria-label="username" [invalid]="!username" />
+                    @if (!username) {
+                        <p-message severity="error" variant="simple" size="small">Username is required</p-message>
+                    }
+                </div>
+                <div class="flex flex-col gap-1">
+                    <p-inputmask mask="(999) 999-9999" [(ngModel)]="phone" placeholder="Phone" [invalid]="!phone" />
+                    @if (!phone) {
+                        <p-message severity="error" variant="simple" size="small">Phone number is required</p-message>
+                    }
+                </div>
+            </div>
+        </div>
+    `,
+    standalone: true,
+    imports: [InputMaskModule, MessageModule, InputTextModule, FormsModule]
+})
+export class MessageFormDemo {
+    username: string | undefined;
+
+    phone: string | undefined;
+}
+```
+
+## Icon
+
+The icon of a message is specified with the icon property or the icon template.
+
+```typescript
+import { Component } from '@angular/core';
+import { AvatarModule } from 'primeng/avatar';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="max-w-sm mx-auto space-y-4">
+            <p-message severity="warn" icon="pi pi-receipt">Your subscription is about to expire.</p-message>
+            <p-message severity="info">
+                <ng-template #icon>
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+                </ng-template>
+                <span class="ms-2">How may I help you?</span>
+            </p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [AvatarModule, MessageModule]
+})
+export class MessageIconDemo {}
+```
+
+## Life
+
+Messages can disappear automatically by defined the life in milliseconds.
+
+```typescript
+import { Component, signal } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
+
+@Component({
+    template: `
+        <div class="flex flex-col items-center justify-center gap-4">
+            <button type="button" pButton [disabled]="visible()" (click)="showMessage()">Show Message</button>
+            @if (visible()) {
+                <p-message [life]="3000" severity="success" icon="pi pi-check">Your account is now ready.</p-message>
+            }
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule, ButtonModule]
+})
+export class MessageLifeDemo {
+    visible = signal(false);
+
+    showMessage() {
+        this.visible.set(true);
+
+        setTimeout(() => {
+            this.visible.set(false);
+        }, 3000);
+    }
+}
+```
+
+## outlined-doc
+
+Configure the variant value as outlined for messages with borders and no background.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="flex flex-wrap gap-4 justify-center">
+            <p-message severity="success" variant="outlined">Success Message</p-message>
+            <p-message severity="info" variant="outlined">Info Message</p-message>
+            <p-message severity="warn" variant="outlined">Warn Message</p-message>
+            <p-message severity="error" variant="outlined">Error Message</p-message>
+            <p-message severity="secondary" variant="outlined">Secondary Message</p-message>
+            <p-message severity="contrast" variant="outlined">Contrast Message</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageOutlinedDemo {}
+```
+
+## preview-doc
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="max-w-sm mx-auto">
+            <p-message severity="contrast" icon="pi pi-megaphone">PrimeNG v22 is here — explore what's new.</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessagePreviewDemo {}
+```
+
+## Severity
+
+The severity option specifies the type of the message.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="max-w-md mx-auto space-y-4">
+            <p-message severity="success" icon="pi pi-check" [closable]="true">Your account is now ready.</p-message>
+            <p-message severity="info" icon="pi pi-sparkles" [closable]="true">Upgrade now and save %5.</p-message>
+            <p-message severity="warn" icon="pi pi-receipt" [closable]="true">Your subscription is about to expire.</p-message>
+            <p-message severity="error" icon="pi pi-exclamation-triangle" [closable]="true">Something went wrong.</p-message>
+            <p-message severity="secondary" icon="pi pi-spinner pi-spin" [closable]="true">Processing may take a few moments.</p-message>
+            <p-message severity="contrast" icon="pi pi-wifi" [closable]="true">You're currently in offline mode.</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageSeverityDemo {}
+```
+
+## simple-doc
+
+Configure the variant value as simple for messages without borders and backgrounds.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="flex flex-wrap gap-4 justify-center">
+            <p-message severity="success" variant="simple">Success Message</p-message>
+            <p-message severity="info" variant="simple">Info Message</p-message>
+            <p-message severity="warn" variant="simple">Warn Message</p-message>
+            <p-message severity="error" variant="simple">Error Message</p-message>
+            <p-message severity="secondary" variant="simple">Secondary Message</p-message>
+            <p-message severity="contrast" variant="simple">Contrast Message</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageSimpleDemo {}
+```
+
+## Sizes
+
+Message provides small and large sizes as alternatives to the base.
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="flex flex-col items-center gap-4">
+            <p-message severity="info" size="small" icon="pi pi-sparkles" [closable]="true">Upgrade now and save %5.</p-message>
+            <p-message severity="info" icon="pi pi-sparkles" [closable]="true">Upgrade now and save %5.</p-message>
+            <p-message severity="info" size="large" icon="pi pi-sparkles" [closable]="true">Upgrade now and save %5.</p-message>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageSizesDemo {}
+```
+
+## Variant
+
+Configure the variant value as outlined or simple .
+
+```typescript
+import { Component } from '@angular/core';
+import { MessageModule } from 'primeng/message';
+
+@Component({
+    template: `
+        <div class="space-y-8 max-w-sm mx-auto">
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold mb-2">Outlined</h3>
+                <p-message severity="success" variant="outlined" icon="pi pi-check" [closable]="true">Your account is now ready.</p-message>
+                <p-message severity="info" variant="outlined" icon="pi pi-sparkles" [closable]="true"><a href="" class="decoration-1! underline!">Upgrade</a> now and save %5.</p-message>
+                <p-message severity="warn" variant="outlined" icon="pi pi-receipt" [closable]="true">Your subscription is about to expire. <a href="" class="decoration-1! underline!">Renew</a></p-message>
+                <p-message severity="error" variant="outlined" icon="pi pi-exclamation-triangle" [closable]="true">Something went wrong. Please <a href="" class="decoration-1! underline!">try again</a>.</p-message>
+                <p-message severity="secondary" variant="outlined" icon="pi pi-spinner pi-spin" [closable]="true">Processing may take a few moments.</p-message>
+                <p-message severity="contrast" variant="outlined" icon="pi pi-wifi" [closable]="true">You're currently in offline mode.</p-message>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold mb-2">Simple</h3>
+                <p-message severity="success" variant="simple" icon="pi pi-check" [closable]="true">Your account is now ready.</p-message>
+                <p-message severity="info" variant="simple" icon="pi pi-sparkles" [closable]="true"><a href="" class="decoration-1! underline!">Upgrade</a> now and save %5.</p-message>
+                <p-message severity="warn" variant="simple" icon="pi pi-receipt" [closable]="true">Your subscription is about to expire. <a href="" class="decoration-1! underline!">Renew</a></p-message>
+                <p-message severity="error" variant="simple" icon="pi pi-exclamation-triangle" [closable]="true">Something went wrong. Please <a href="" class="decoration-1! underline!">try again</a>.</p-message>
+                <p-message severity="secondary" variant="simple" icon="pi pi-spinner pi-spin" [closable]="true">Processing may take a few moments.</p-message>
+                <p-message severity="contrast" variant="simple" icon="pi pi-wifi" [closable]="true">You're currently in offline mode.</p-message>
+            </div>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule]
+})
+export class MessageVariantDemo {}
+```
+
+## Message
+
+Message groups a collection of contents in tabs.
+
+### Props
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| dt | object \| undefined | undefined | Defines scoped design tokens of the component. |
+| unstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| pt | PassThrough<I, MessagePassThroughOptions<I>> | undefined | Used to pass attributes to DOM elements inside the component. |
+| ptOptions | PassThroughOptions \| undefined | undefined | Used to configure passthrough(pt) options of the component. |
+| severity | "success" \| "info" \| "warn" \| "error" \| "secondary" \| "contrast" | 'info' | Severity level of the message. |
+| closable | boolean | false | Whether the message can be closed manually using the close icon. |
+| icon | string \| undefined | undefined | Icon to display in the message. |
+| closeIcon | string \| undefined | undefined | Icon to display in the message close button. |
+| life | number \| undefined | undefined | Delay in milliseconds to close the message automatically. |
+| size | MessageSize \| undefined | - | Defines the size of the component. |
+| variant | MessageVariant \| undefined | - | Specifies the input variant of the component. |
+| motionOptions | MotionOptions \| undefined | - | The motion options. |
+
+### Emits
+
+| Name | Parameters | Description |
+|------|------------|-------------|
+| onClose | event: MessageCloseEvent | Emits when the message is closed. |
+
+### Templates
+
+| Name | Type | Description |
+|------|------|-------------|
+| container | TemplateRef<MessageContainerTemplateContext> \| undefined | Custom template of the message container. |
+| icon | TemplateRef<void> \| undefined | Custom template of the message icon. |
+| closeicon | TemplateRef<void> \| undefined | Custom template of the close icon. |
+
+### Methods
+
+| Name | Parameters | Return Type | Description |
+|------|------------|-------------|-------------|
+| close | event: Event | void | Closes the message. |
+
+## Pass Through Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| host | PassThroughOption<HTMLElement, I> | Used to pass attributes to the host's DOM element. |
+| root | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the root's DOM element. |
+| content | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the content's DOM element. |
+| contentWrapper | PassThroughOption<HTMLDivElement, I> | Used to pass attributes to the content's DOM element. |
+| icon | PassThroughOption<HTMLElement, I> | Used to pass attributes to the icon's DOM element. |
+| text | PassThroughOption<HTMLSpanElement, I> | Used to pass attributes to the text's DOM element. |
+| closeButton | PassThroughOption<HTMLButtonElement, I> | Used to pass attributes to the close button's DOM element. |
+| closeIcon | PassThroughOption<HTMLElement, I> | Used to pass attributes to the close icon's DOM element. |
+| motion | MotionOptions | Used to pass options to the motion component/directive. |
+
+## Theming
+
+### CSS Classes
+
+| Class | Description |
+|-------|-------------|
+| p-message | Class name of the root element |
+| p-message-content | Class name of the content element |
+| p-message-icon | Class name of the icon element |
+| p-message-text | Class name of the text element |
+| p-message-close-button | Class name of the close button element |
+| p-message-close-icon | Class name of the close icon element |
+
+### Design Tokens
+
+| Token | CSS Variable | Description |
+|-------|--------------|-------------|
+| message.border.radius | --p-message-border-radius | Border radius of root |
+| message.border.width | --p-message-border-width | Border width of root |
+| message.transition.duration | --p-message-transition-duration | Transition duration of root |
+| message.content.padding | --p-message-content-padding | Padding of content |
+| message.content.gap | --p-message-content-gap | Gap of content |
+| message.content.sm.padding | --p-message-content-sm-padding | Sm padding of content |
+| message.content.lg.padding | --p-message-content-lg-padding | Lg padding of content |
+| message.text.font.size | --p-message-text-font-size | Font size of text |
+| message.text.font.weight | --p-message-text-font-weight | Font weight of text |
+| message.text.sm.font.size | --p-message-text-sm-font-size | Sm font size of text |
+| message.text.lg.font.size | --p-message-text-lg-font-size | Lg font size of text |
+| message.icon.size | --p-message-icon-size | Size of icon |
+| message.icon.sm.size | --p-message-icon-sm-size | Sm size of icon |
+| message.icon.lg.size | --p-message-icon-lg-size | Lg size of icon |
+| message.close.button.width | --p-message-close-button-width | Width of close button |
+| message.close.button.height | --p-message-close-button-height | Height of close button |
+| message.close.button.border.radius | --p-message-close-button-border-radius | Border radius of close button |
+| message.close.button.focus.ring.width | --p-message-close-button-focus-ring-width | Focus ring width of close button |
+| message.close.button.focus.ring.style | --p-message-close-button-focus-ring-style | Focus ring style of close button |
+| message.close.button.focus.ring.offset | --p-message-close-button-focus-ring-offset | Focus ring offset of close button |
+| message.close.icon.size | --p-message-close-icon-size | Size of close icon |
+| message.close.icon.sm.size | --p-message-close-icon-sm-size | Sm size of close icon |
+| message.close.icon.lg.size | --p-message-close-icon-lg-size | Lg size of close icon |
+| message.outlined.border.width | --p-message-outlined-border-width | Root border width of outlined |
+| message.simple.content.padding | --p-message-simple-content-padding | Content padding of simple |
+| message.info.background | --p-message-info-background | Background of info |
+| message.info.border.color | --p-message-info-border-color | Border color of info |
+| message.info.color | --p-message-info-color | Color of info |
+| message.info.shadow | --p-message-info-shadow | Shadow of info |
+| message.info.close.button.hover.background | --p-message-info-close-button-hover-background | Close button hover background of info |
+| message.info.close.button.focus.ring.color | --p-message-info-close-button-focus-ring-color | Close button focus ring color of info |
+| message.info.close.button.focus.ring.shadow | --p-message-info-close-button-focus-ring-shadow | Close button focus ring shadow of info |
+| message.info.outlined.color | --p-message-info-outlined-color | Outlined color of info |
+| message.info.outlined.border.color | --p-message-info-outlined-border-color | Outlined border color of info |
+| message.info.simple.color | --p-message-info-simple-color | Simple color of info |
+| message.success.background | --p-message-success-background | Background of success |
+| message.success.border.color | --p-message-success-border-color | Border color of success |
+| message.success.color | --p-message-success-color | Color of success |
+| message.success.shadow | --p-message-success-shadow | Shadow of success |
+| message.success.close.button.hover.background | --p-message-success-close-button-hover-background | Close button hover background of success |
+| message.success.close.button.focus.ring.color | --p-message-success-close-button-focus-ring-color | Close button focus ring color of success |
+| message.success.close.button.focus.ring.shadow | --p-message-success-close-button-focus-ring-shadow | Close button focus ring shadow of success |
+| message.success.outlined.color | --p-message-success-outlined-color | Outlined color of success |
+| message.success.outlined.border.color | --p-message-success-outlined-border-color | Outlined border color of success |
+| message.success.simple.color | --p-message-success-simple-color | Simple color of success |
+| message.warn.background | --p-message-warn-background | Background of warn |
+| message.warn.border.color | --p-message-warn-border-color | Border color of warn |
+| message.warn.color | --p-message-warn-color | Color of warn |
+| message.warn.shadow | --p-message-warn-shadow | Shadow of warn |
+| message.warn.close.button.hover.background | --p-message-warn-close-button-hover-background | Close button hover background of warn |
+| message.warn.close.button.focus.ring.color | --p-message-warn-close-button-focus-ring-color | Close button focus ring color of warn |
+| message.warn.close.button.focus.ring.shadow | --p-message-warn-close-button-focus-ring-shadow | Close button focus ring shadow of warn |
+| message.warn.outlined.color | --p-message-warn-outlined-color | Outlined color of warn |
+| message.warn.outlined.border.color | --p-message-warn-outlined-border-color | Outlined border color of warn |
+| message.warn.simple.color | --p-message-warn-simple-color | Simple color of warn |
+| message.error.background | --p-message-error-background | Background of error |
+| message.error.border.color | --p-message-error-border-color | Border color of error |
+| message.error.color | --p-message-error-color | Color of error |
+| message.error.shadow | --p-message-error-shadow | Shadow of error |
+| message.error.close.button.hover.background | --p-message-error-close-button-hover-background | Close button hover background of error |
+| message.error.close.button.focus.ring.color | --p-message-error-close-button-focus-ring-color | Close button focus ring color of error |
+| message.error.close.button.focus.ring.shadow | --p-message-error-close-button-focus-ring-shadow | Close button focus ring shadow of error |
+| message.error.outlined.color | --p-message-error-outlined-color | Outlined color of error |
+| message.error.outlined.border.color | --p-message-error-outlined-border-color | Outlined border color of error |
+| message.error.simple.color | --p-message-error-simple-color | Simple color of error |
+| message.secondary.background | --p-message-secondary-background | Background of secondary |
+| message.secondary.border.color | --p-message-secondary-border-color | Border color of secondary |
+| message.secondary.color | --p-message-secondary-color | Color of secondary |
+| message.secondary.shadow | --p-message-secondary-shadow | Shadow of secondary |
+| message.secondary.close.button.hover.background | --p-message-secondary-close-button-hover-background | Close button hover background of secondary |
+| message.secondary.close.button.focus.ring.color | --p-message-secondary-close-button-focus-ring-color | Close button focus ring color of secondary |
+| message.secondary.close.button.focus.ring.shadow | --p-message-secondary-close-button-focus-ring-shadow | Close button focus ring shadow of secondary |
+| message.secondary.outlined.color | --p-message-secondary-outlined-color | Outlined color of secondary |
+| message.secondary.outlined.border.color | --p-message-secondary-outlined-border-color | Outlined border color of secondary |
+| message.secondary.simple.color | --p-message-secondary-simple-color | Simple color of secondary |
+| message.contrast.background | --p-message-contrast-background | Background of contrast |
+| message.contrast.border.color | --p-message-contrast-border-color | Border color of contrast |
+| message.contrast.color | --p-message-contrast-color | Color of contrast |
+| message.contrast.shadow | --p-message-contrast-shadow | Shadow of contrast |
+| message.contrast.close.button.hover.background | --p-message-contrast-close-button-hover-background | Close button hover background of contrast |
+| message.contrast.close.button.focus.ring.color | --p-message-contrast-close-button-focus-ring-color | Close button focus ring color of contrast |
+| message.contrast.close.button.focus.ring.shadow | --p-message-contrast-close-button-focus-ring-shadow | Close button focus ring shadow of contrast |
+| message.contrast.outlined.color | --p-message-contrast-outlined-color | Outlined color of contrast |
+| message.contrast.outlined.border.color | --p-message-contrast-outlined-border-color | Outlined border color of contrast |
+| message.contrast.simple.color | --p-message-contrast-simple-color | Simple color of contrast |

@@ -1,0 +1,516 @@
+---
+title: "Angular Textarea Component"
+type: "component"
+version: "latest"
+source_url: "https://primeng.dev/llms/components/textarea.md"
+description: "Textarea adds styling and autoResize functionality to standard textarea element."
+---
+
+# Angular Textarea Component
+
+Textarea adds styling and autoResize functionality to standard textarea element.
+
+## Accessibility
+
+Screen Reader Textarea component renders a native textarea element that implicitly includes any passed prop. Value to describe the component can either be provided via label tag combined with id prop or using aria-labelledby , aria-label props.
+
+## AutoResize
+
+When autoResize is enabled, textarea grows instead of displaying a scrollbar.
+
+```typescript
+import { Component } from '@angular/core';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea rows="5" cols="30" pTextarea [autoResize]="true"></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule]
+})
+export class TextareaAutoResizeDemo {}
+```
+
+## Basic
+
+Textarea is applied to an input field with pTextarea directive.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea rows="5" cols="30" pTextarea [(ngModel)]="value"></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule, FormsModule]
+})
+export class TextareaBasicDemo {
+    value!: string;
+}
+```
+
+## Disabled
+
+When disabled is present, the element cannot be edited and focused.
+
+```typescript
+import { Component } from '@angular/core';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea rows="5" cols="30" pTextarea [disabled]="true"></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule]
+})
+export class TextareaDisabledDemo {}
+```
+
+## Filled
+
+Specify the variant property as filled to display the component with a higher visual emphasis than the default outlined style.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea [(ngModel)]="value" [variant]="'filled'" rows="5" cols="30" pTextarea></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule, FormsModule]
+})
+export class TextareaFilledDemo {
+    value!: string;
+}
+```
+
+## Float Label
+
+A floating label appears on top of the input field when focused. Visit FloatLabel documentation for more information.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex flex-wrap justify-center items-stretch gap-4">
+            <p-floatlabel>
+                <textarea pTextarea id="over_label" [(ngModel)]="value1" rows="5" cols="30" style="resize: none" class="h-full"></textarea>
+                <label for="over_label">Over Label</label>
+            </p-floatlabel>
+            <p-floatlabel variant="in">
+                <textarea pTextarea id="in_label" [(ngModel)]="value2" rows="5" cols="30" style="resize: none" class="h-full"></textarea>
+                <label for="in_label">In Label</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+                <textarea pTextarea id="on_label" [(ngModel)]="value3" rows="5" cols="30" style="resize: none" class="h-full"></textarea>
+                <label for="on_label">On Label</label>
+            </p-floatlabel>
+        </div>
+    `,
+    standalone: true,
+    imports: [FloatLabelModule, TextareaModule, FormsModule]
+})
+export class TextareaFloatLabelDemo {
+    value1: string = '';
+
+    value2: string = '';
+
+    value3: string = '';
+}
+```
+
+## Fluid
+
+The fluid prop makes the component take up the full width of its container when set to true.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <textarea rows="5" cols="30" pTextarea [(ngModel)]="value" fluid></textarea>
+    `,
+    standalone: true,
+    imports: [TextareaModule, FormsModule]
+})
+export class TextareaFluidDemo {
+    value!: string;
+}
+```
+
+## Ifta Label
+
+IftaLabel is used to create infield top aligned labels. Visit IftaLabel documentation for more information.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <p-iftalabel>
+                <textarea pTextarea id="description" [(ngModel)]="value" rows="5" cols="30" style="resize: none"></textarea>
+                <label for="description">Description</label>
+            </p-iftalabel>
+        </div>
+    `,
+    standalone: true,
+    imports: [IftaLabelModule, TextareaModule, FormsModule]
+})
+export class TextareaIftaLabelDemo {
+    value: string = '';
+}
+```
+
+## Invalid
+
+The invalid state is applied using the ⁠invalid property to indicate failed validation, which can be integrated with Angular Forms.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea rows="5" cols="30" pTextarea [(ngModel)]="value" [invalid]="!value" placeholder="Address"></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule, FormsModule]
+})
+export class TextareaInvalidDemo {
+    value!: string;
+}
+```
+
+## keyfilter-doc
+
+InputText has built-in key filtering support to block certain keys, refer to keyfilter page for more information.
+
+```typescript
+import { Component } from '@angular/core';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex justify-center">
+            <textarea pKeyFilter="int" rows="5" cols="30" pTextarea></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [KeyFilterModule, TextareaModule]
+})
+export class TextareaKeyFilterDemo {}
+```
+
+## preview-doc
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+import { LabelModule } from 'primeng/label';
+
+@Component({
+    template: `
+        <div class="flex flex-col justify-center gap-2 max-w-xs mx-auto">
+            <label pLabel class="font-semibold text-sm text-color">Description</label>
+            <textarea rows="5" cols="30" pTextarea [(ngModel)]="value" placeholder="Write a description..."></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule, LabelModule, FormsModule]
+})
+export class TextareaPreviewDemo {
+    value!: string;
+}
+```
+
+## reactiveforms-doc
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { TextareaModule } from 'primeng/textarea';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form [formGroup]="exampleForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                    <textarea rows="5" cols="30" pTextarea formControlName="address" [invalid]="isInvalid('address')"></textarea>
+                    @if (isInvalid('address')) {
+                        <p-message severity="error" size="small" variant="simple">Address is required..</p-message>
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule, ToastModule, ButtonModule, TextareaModule, ReactiveFormsModule]
+})
+export class TextareaReactiveFormsDemo {
+    private fb = inject(FormBuilder);
+
+    messageService = inject(MessageService);
+
+    items: any[] | undefined;
+
+    exampleForm: FormGroup | undefined;
+
+    formSubmitted: boolean = false;
+
+    constructor() {
+        this.exampleForm = this.fb.group({
+            address: ['', Validators.required]
+        });
+    }
+
+    onSubmit() {
+        this.formSubmitted = true;
+
+        if (this.exampleForm.valid) {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        }
+    }
+
+    isInvalid(controlName: string) {
+        const control = this.exampleForm.get(controlName);
+
+        return control?.invalid && (control.touched || this.formSubmitted);
+    }
+}
+```
+
+## signal-forms-doc
+
+```typescript
+import { Component, inject, signal } from '@angular/core';
+import { form, FormField, required, submit } from '@angular/forms/signals';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { TextareaModule } from 'primeng/textarea';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form novalidate (submit)="onSubmit($event)" class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                    <textarea rows="5" cols="30" pTextarea [formField]="exampleForm.address"></textarea>
+                    @if (exampleForm.address().touched() && exampleForm.address().invalid()) {
+                        @for (error of exampleForm.address().errors(); track error.kind) {
+                            <p-message severity="error" size="small" variant="simple">{{ error.message }}</p-message>
+                        }
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule, ToastModule, ButtonModule, TextareaModule, FormField]
+})
+export class TextareaSignalFormsDemo {
+    messageService = inject(MessageService);
+
+    model = signal({ address: '' });
+
+    exampleForm = form(this.model, (path) => {
+        required(path.address, { when: ({ state }) => state.touched(), message: 'Address is required.' });
+    });
+
+    onSubmit(event: Event) {
+        event.preventDefault();
+        submit(this.exampleForm, async () => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        });
+    }
+}
+```
+
+## Sizes
+
+Textarea provides small and large sizes as alternatives to the base.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+
+@Component({
+    template: `
+        <div class="flex flex-col items-center gap-4">
+            <textarea pTextarea [(ngModel)]="value1" pSize="small" placeholder="Small" rows="3"></textarea>
+            <textarea pTextarea [(ngModel)]="value2" placeholder="Normal" rows="3"></textarea>
+            <textarea pTextarea [(ngModel)]="value3" pSize="large" placeholder="Large" rows="3"></textarea>
+        </div>
+    `,
+    standalone: true,
+    imports: [TextareaModule, FormsModule]
+})
+export class TextareaSizesDemo {
+    value1!: string;
+
+    value2!: string;
+
+    value3!: string;
+}
+```
+
+## templatedrivenforms-doc
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { TextareaModule } from 'primeng/textarea';
+import { MessageService } from 'primeng/api';
+
+@Component({
+    template: `
+        <p-toast />
+        <div class="flex justify-center">
+            <form #exampleForm="ngForm" (ngSubmit)="onSubmit(exampleForm)" (ngSubmit)="onSubmit(exampleForm)" class="flex flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                    <textarea name="address" #address="ngModel" rows="5" cols="30" [(ngModel)]="value" pTextarea [invalid]="address.invalid && (address.touched || exampleForm.submitted)" required></textarea>
+                    @if (address.invalid && (address.touched || exampleForm.submitted)) {
+                        <p-message severity="error" size="small" variant="simple">Address is required.</p-message>
+                    }
+                </div>
+                <button pButton severity="secondary" type="submit">Submit</button>
+            </form>
+        </div>
+    `,
+    standalone: true,
+    imports: [MessageModule, ToastModule, ButtonModule, TextareaModule, FormsModule]
+})
+export class TextareaTemplateDrivenFormsDemo {
+    messageService = inject(MessageService);
+
+    items: any[] = [];
+
+    value: any;
+
+    onSubmit(form: any) {
+        if (form.valid) {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form is submitted', life: 3000 });
+        }
+    }
+}
+```
+
+## Textarea
+
+Textarea adds styling and autoResize functionality to standard textarea element.
+
+### Props
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| dt | object \| undefined | undefined | Defines scoped design tokens of the component. |
+| unstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| pt | PassThrough<I, TextareaPassThroughOptions<I>> | undefined | Used to pass attributes to DOM elements inside the component. |
+| ptOptions | PassThroughOptions \| undefined | undefined | Used to configure passthrough(pt) options of the component. |
+| pTextareaPT | PassThrough<I, TextareaPassThroughOptions<I>> | undefined | Used to pass attributes to DOM elements inside the Textarea component. |
+| pTextareaUnstyled | boolean \| undefined | undefined | Indicates whether the component should be rendered without styles. |
+| autoResize | boolean | - | When present, textarea size changes as being typed. |
+| pSize | InputSize \| undefined | - | Defines the size of the component. |
+| variant | InputVariant \| undefined | undefined | Specifies the input variant of the component. |
+| fluid | boolean \| undefined | undefined | Spans 100% width of the container when enabled. |
+| invalid | boolean | false | When present, it specifies that the component should have invalid state style. |
+
+### Emits
+
+| Name | Parameters | Description |
+|------|------------|-------------|
+| onResize | event: {} \| Event | Callback to invoke on textarea resize. |
+
+## Pass Through Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| host | PassThroughOption<HTMLTextAreaElement, I> | Used to pass attributes to the host's DOM element. |
+| root | PassThroughOption<HTMLTextAreaElement, I> | Used to pass attributes to the root's DOM element. |
+
+## Theming
+
+### CSS Classes
+
+| Class | Description |
+|-------|-------------|
+| p-textarea | Class name of the root element |
+
+### Design Tokens
+
+| Token | CSS Variable | Description |
+|-------|--------------|-------------|
+| textarea.background | --p-textarea-background | Background of root |
+| textarea.disabled.background | --p-textarea-disabled-background | Disabled background of root |
+| textarea.filled.background | --p-textarea-filled-background | Filled background of root |
+| textarea.filled.hover.background | --p-textarea-filled-hover-background | Filled hover background of root |
+| textarea.filled.focus.background | --p-textarea-filled-focus-background | Filled focus background of root |
+| textarea.border.color | --p-textarea-border-color | Border color of root |
+| textarea.hover.border.color | --p-textarea-hover-border-color | Hover border color of root |
+| textarea.focus.border.color | --p-textarea-focus-border-color | Focus border color of root |
+| textarea.invalid.border.color | --p-textarea-invalid-border-color | Invalid border color of root |
+| textarea.color | --p-textarea-color | Color of root |
+| textarea.disabled.color | --p-textarea-disabled-color | Disabled color of root |
+| textarea.placeholder.color | --p-textarea-placeholder-color | Placeholder color of root |
+| textarea.invalid.placeholder.color | --p-textarea-invalid-placeholder-color | Invalid placeholder color of root |
+| textarea.shadow | --p-textarea-shadow | Shadow of root |
+| textarea.padding.x | --p-textarea-padding-x | Padding x of root |
+| textarea.padding.y | --p-textarea-padding-y | Padding y of root |
+| textarea.border.radius | --p-textarea-border-radius | Border radius of root |
+| textarea.focus.ring.width | --p-textarea-focus-ring-width | Focus ring width of root |
+| textarea.focus.ring.style | --p-textarea-focus-ring-style | Focus ring style of root |
+| textarea.focus.ring.color | --p-textarea-focus-ring-color | Focus ring color of root |
+| textarea.focus.ring.offset | --p-textarea-focus-ring-offset | Focus ring offset of root |
+| textarea.focus.ring.shadow | --p-textarea-focus-ring-shadow | Focus ring shadow of root |
+| textarea.transition.duration | --p-textarea-transition-duration | Transition duration of root |
+| textarea.sm.font.size | --p-textarea-sm-font-size | Sm font size of root |
+| textarea.sm.padding.x | --p-textarea-sm-padding-x | Sm padding x of root |
+| textarea.sm.padding.y | --p-textarea-sm-padding-y | Sm padding y of root |
+| textarea.lg.font.size | --p-textarea-lg-font-size | Lg font size of root |
+| textarea.lg.padding.x | --p-textarea-lg-padding-x | Lg padding x of root |
+| textarea.lg.padding.y | --p-textarea-lg-padding-y | Lg padding y of root |
+| textarea.font.weight | --p-textarea-font-weight | Font weight of root |
+| textarea.font.size | --p-textarea-font-size | Font size of root |
