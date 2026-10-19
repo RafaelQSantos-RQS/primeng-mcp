@@ -1,0 +1,33 @@
+schema: spec-driven
+
+# Project context (optional)
+# Add only constraints that should guide OpenSpec artifacts and workflows.
+# Include constraints an agent cannot infer by reading the code.
+# Keep general project documentation and discoverable codebase facts out.
+context: |
+  O PrimeNG só disponibiliza endpoints LLMs.txt (/llms/llms.txt, /llms/components/*.md)
+  a partir da versão 21. Versões anteriores (v20, v19, etc.) não possuem esses endpoints.
+  Todo o projeto primeng-mcp depende desse padrão e portanto só suporta PrimeNG v21+.
+  A URL base é https://primeng.dev/llms/ para "latest" e https://v{N}.primeng.org/llms/ para versões específicas (N >= 21).
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
